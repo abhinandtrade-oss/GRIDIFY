@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  
+    <!-- PRELOADER -->
+    
+    <div id="preloader">
+    <img id="preloaderImg" style="width:200px; height:10px;">
+</div>
+
+<script>
+fetch('data/data.json')
+  .then(r => r.json())
+  .then(data => {
+    const url = data["IM-103"]
+    document.getElementById('preloaderImg').src = url
+  })
+  .catch(err => console.error('JSON load error', err))
+</script>
+
+	<!-- Header -->
+	<header>
+        <div class="header">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="index.html">
+    <img id="logohead"
+     class="logo"
+     src=""
+     alt="Gridify"
+     width="200"
+     height="200">
+
+     <script>
+fetch("data/data.json")
+  .then(response => response.json())
+  .then(data => {
+    const imgUrl = data["IM-101"];
+    document.getElementById("logohead").src = imgUrl;
+  })
+  .catch(error => console.error("Error loading image:", error));
+</script>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Image ID Manager — Bulk Upload</title>
+<style>body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:18px}.header{display:flex;align-items:center;justify-content:space-between}.controls{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap}.input{padding:8px;border:1px solid #ccc;border-radius:6px;min-width:220px}.btn{padding:8px 10px;border-radius:6px;border:0;cursor:pointer}.small{font-size:13px;color:#333}.table{width:100%;border-collapse:collapse;margin-top:18px}.table th,.table td{border:1px solid #ddd;padding:8px;font-size:14px;text-align:left;vertical-align:middle}.thumb{width:120px;height:80px;object-fit:contain;border-radius:6px;background:#f7f7f7;padding:6px}.notice{margin-top:10px;color:#555;font-size:13px}.upload-controls{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}</style></head><body>
+<div class="header"><h2>Image ID Manager</h2><div style="font-size:13px;color:#666">Bulk upload supported (JSON / CSV)</div></div>
+<section id="createSection" style="margin-top:12px"><h3>Create / Add</h3><div class="controls"><input id="newNum" class="input" placeholder="Number (optional)" style="max-width:140px"><input id="newUrl" class="input" placeholder="Image URL"><button id="previewBtn" class="btn">Preview</button><button id="createBtn" class="btn">Create</button><button id="exportBtn" class="btn" style="margin-left:auto">Export JSON</button></div>
+<div class="upload-controls"><label class="small">Bulk upload:</label><input id="fileInput" type="file" accept=".json,.csv"><button id="importBtn" class="btn">Import</button><button id="sampleBtn" class="btn">Download Sample</button><div class="small" style="margin-left:8px;color:#666">JSON format: {"IM-101":"https://...","IM-102":"https://..."} or CSV: id,url</div></div>
+<div id="createPreview" style="display:none;margin-top:12px"><img id="createImg" style="max-width:320px;max-height:220px;border:1px solid #ddd;padding:6px;border-radius:6px"><div class="small" id="createUrl" style="margin-top:8px"></div></div></section>
+<section id="previewSection" style="margin-top:28px"><h3>Preview Table</h3><div class="controls" style="margin-bottom:12px"><input id="filter" class="input" placeholder="Filter or type exact ID (IM-101)"><button id="clearBtn" class="btn">Clear</button></div><table class="table" id="previewTable" aria-live="polite"><thead><tr><th style="width:14%">Preview</th><th style="width:18%">ID</th><th>URL</th></tr></thead><tbody></tbody></table><div class="notice">Use the filter box to find IDs. Exact match shows only that row.</div></section>
+<section id="editSection" style="display:none;margin-top:24px"><h3>Edit</h3><table class="table" id="mapTable"><thead><tr><th style="width:22%">ID</th><th>URL</th><th style="width:22%">Actions</th></tr></thead><tbody></tbody></table></section>
+<script>
+let mapping = {};
+// Utility: show alert-like messages (non-blocking)
+function flash(msg) {
+  const d = document.createElement('div');
+  d.textContent = msg;
+  d.style.position='fixed';
+  d.style.right='18px';
+  d.style.bottom='18px';
+  d.style.background='#333';
+  d.style.color='#fff';
+  d.style.padding='10px 12px';
+  d.style.borderRadius='8px';
+  d.style.zIndex=9999;
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(),3000);
+}
+// Load bundled + stored, merge so added data is preserved
+async function loadMapping() {
+  let bundled = {};
+  try {
+    const res = await fetch('data.json', {cache: 'no-store'});
+    if (res.ok) bundled = await res.json();
+  } catch(e) {}
+  const stored = localStorage.getItem('imageMapping');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      mapping = Object.assign({}, bundled, parsed);
+    } catch(e) {
+      mapping = Object.assign({}, bundled);
+    }
+  } else {
+    mapping = Object.assign({}, bundled);
+  }
+  localStorage.setItem('imageMapping', JSON.stringify(mapping));
+  renderPreviewTable();
+  renderTable();
+}
+// Render preview table with thumbnails
+function renderPreviewTable(filter='') {
+  const tbody = document.querySelector('#previewTable tbody');
+  tbody.innerHTML = '';
+  const q = (filter||'').toLowerCase();
+  const keys = Object.keys(mapping).sort((a,b)=> parseInt(a.replace(/^IM-/,'')) - parseInt(b.replace(/^IM-/,'')) );
+  for (const id of keys) {
+    const url = mapping[id];
+    if (q) {
+      if (mapping[filter]) {
+        if (id !== filter) continue;
+      } else {
+        if (!id.toLowerCase().includes(q) && !(url||'').toLowerCase().includes(q)) continue;
+      }
+    }
+    const tr = document.createElement('tr');
+    const tdThumb = document.createElement('td');
+    const img = document.createElement('img');
+    img.className = 'thumb';
+    img.src = url;
+    img.alt = id;
+    img.onerror = ()=>{ img.style.opacity = 0.5; img.title = 'Failed to load'; };
+    tdThumb.appendChild(img);
+    tr.appendChild(tdThumb);
+    const tdId = document.createElement('td');
+    tdId.textContent = id;
+    tr.appendChild(tdId);
+    const tdUrl = document.createElement('td');
+    tdUrl.textContent = url;
+    tr.appendChild(tdUrl);
+    tbody.appendChild(tr);
+  }
+  if (!tbody.children.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td colspan="3" class="small">No items to show.</td>';
+    tbody.appendChild(tr);
+  }
+}
+// Render editable table for CRUD (hidden unless needed)
+function renderTable() {
+  const tbody = document.querySelector('#mapTable tbody');
+  tbody.innerHTML = '';
+  const keys = Object.keys(mapping).sort((a,b)=> parseInt(a.replace(/^IM-/,'')) - parseInt(b.replace(/^IM-/,'')) );
+  for (const id of keys) {
+    const url = mapping[id];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input class="input idInput" value="${id}" data-original="${id}"></td>
+                    <td><input class="input urlInput" value="${url}"></td>
+                    <td>
+                      <button class="btn saveRow">Save</button>
+                      <button class="btn delRow">Delete</button>
+                    </td>`;
+    tbody.appendChild(tr);
+  }
+  attachRowHandlers();
+}
+function attachRowHandlers() {
+  document.querySelectorAll('.saveRow').forEach(btn=>{
+    btn.onclick = (e)=>{
+      const tr = e.target.closest('tr');
+      const original = tr.querySelector('.idInput').dataset.original;
+      const newId = tr.querySelector('.idInput').value.trim();
+      const newUrl = tr.querySelector('.urlInput').value.trim();
+      if (!/^IM-\d+$/.test(newId)) { alert('ID must be IM-<number>'); return; }
+      if (!newUrl) { alert('URL required'); return; }
+      if (newId !== original) delete mapping[original];
+      mapping[newId] = newUrl;
+      tr.querySelector('.idInput').dataset.original = newId;
+      localStorage.setItem('imageMapping', JSON.stringify(mapping));
+      flash('Saved row');
+      renderPreviewTable(document.getElementById('filter').value);
+      renderTable();
+    };
+  });
+  document.querySelectorAll('.delRow').forEach(btn=>{
+    btn.onclick = (e)=>{
+      const tr = e.target.closest('tr');
+      const id = tr.querySelector('.idInput').value.trim();
+      if (!confirm('Delete '+id+'?')) return;
+      delete mapping[id];
+      localStorage.setItem('imageMapping', JSON.stringify(mapping));
+      flash('Deleted '+id);
+      renderPreviewTable(document.getElementById('filter').value);
+      renderTable();
+    };
+  });
+}
+// Create/preview handlers
+document.getElementById('previewBtn').addEventListener('click', ()=>{
+  const url = document.getElementById('newUrl').value.trim();
+  if (!url) { alert('Enter URL'); return; }
+  const img = document.getElementById('createImg');
+  img.src = url;
+  img.onerror = ()=>{ img.style.opacity=0.5; img.title='Failed to load'; };
+  document.getElementById('createUrl').textContent = url;
+  document.getElementById('createPreview').style.display = 'block';
+});
+document.getElementById('createBtn').addEventListener('click', ()=>{
+  let num = document.getElementById('newNum').value.trim();
+  const url = document.getElementById('newUrl').value.trim();
+  if (!url) { alert('URL required'); return; }
+  if (num==='') {
+    const nums = Object.keys(mapping).map(k=>parseInt(k.replace(/^IM-/,''))).filter(n=>!isNaN(n));
+    const next = nums.length?Math.max(...nums)+1:101;
+    num = String(next);
+  }
+  if (!/^\d+$/.test(num)) { alert('Numeric suffix required'); return; }
+  const id = 'IM-'+num;
+  if (mapping[id] && !confirm(id+' exists, overwrite?')) return;
+  mapping[id] = url;
+  // save merged mapping (preserve existing + new)
+  localStorage.setItem('imageMapping', JSON.stringify(mapping));
+  flash('Created '+id);
+  document.getElementById('newNum').value='';
+  document.getElementById('newUrl').value='';
+  document.getElementById('createPreview').style.display='none';
+  renderPreviewTable(document.getElementById('filter').value);
+  renderTable();
+});
+// Import handlers for JSON and CSV bulk upload
+document.getElementById('importBtn').addEventListener('click', ()=>{
+  const fi = document.getElementById('fileInput');
+  if (!fi.files || !fi.files.length) { alert('Choose a file first'); return; }
+  const file = fi.files[0];
+  const name = file.name.toLowerCase();
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    const text = ev.target.result;
+    if (name.endsWith('.json')) {
+      try {
+        const parsed = JSON.parse(text);
+        if (typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error('JSON must be an object mapping id->url');
+        // merge: parsed keys overwrite existing
+        Object.assign(mapping, parsed);
+        localStorage.setItem('imageMapping', JSON.stringify(mapping));
+        flash('Imported JSON, keys added: '+Object.keys(parsed).length);
+        renderPreviewTable();
+        renderTable();
+      } catch (e) {
+        alert('Invalid JSON file: '+e.message);
+      }
+    } else if (name.endsWith('.csv')) {
+      // parse simple CSV: lines of id,url (allow header)
+      const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+      let added = 0;
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length < 2) continue;
+        const id = parts[0].trim();
+        const url = parts.slice(1).join(',').trim();
+        if (!/^IM-\d+$/.test(id)) continue;
+        mapping[id] = url;
+        added++;
+      }
+      localStorage.setItem('imageMapping', JSON.stringify(mapping));
+      flash('Imported CSV, rows added: '+added);
+      renderPreviewTable();
+      renderTable();
+    } else {
+      alert('Unsupported file type. Use .json or .csv');
+    }
+  };
+  reader.onerror = ()=> alert('Failed to read file');
+  reader.readAsText(file);
+});
+// Download sample file for bulk upload
+document.getElementById('sampleBtn').addEventListener('click', ()=>{
+  const sample = JSON.stringify({ "IM-999":"https://example.com/image.png", "IM-1000":"https://example.com/image2.png" }, null, 2);
+  const blob = new Blob([sample], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'sample-bulk.json';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  flash('Downloaded sample-bulk.json');
+});
+// Export on user click: single merged file named data.json
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  try {
+    const content = JSON.stringify(mapping, null, 2);
+    const blob = new Blob([content], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.download = 'data.json';
+    a.href = url;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    flash('Exported data.json');
+  } catch (e) {
+    alert('Export failed. Check console for details.');
+    console.error(e);
+  }
+});
+// Filter behavior: exact match shows only that row
+document.getElementById('filter').addEventListener('input', (e)=>{
+  const q = e.target.value.trim();
+  if (!q) { renderPreviewTable(); return; }
+  if (mapping[q]) { renderPreviewTable(q); return; }
+  renderPreviewTable(q.toLowerCase());
+});
+document.getElementById('clearBtn').addEventListener('click', ()=>{ document.getElementById('filter').value=''; renderPreviewTable(); });
+// initial load
+loadMapping();
+</script></body></html>
