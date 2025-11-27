@@ -3347,6 +3347,74 @@ a:hover {
   border-radius: 6px; /* slight curve  */
 }
 
+
+
+/* Container that acts as the visible window */
+.scroll-container {
+  width: 100%;
+  overflow: hidden; /* Hides the content outside the container */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* The container itself does not need a background color */
+}
+
+/* The element that holds all the content */
+.scroll-content {
+  display: flex;
+  white-space: nowrap; /* Ensures content stays on one line */
+  animation: scroll-left 18s linear infinite; /* Increased duration for smoother look */
+}
+
+/* Individual service item general styling */
+.service-item {
+  /* Crucial: flex-shrink: 0 prevents items from shrinking */
+  flex-shrink: 0;
+  min-width: 250px; /* Give each item a minimum width to display content */
+  height: 60px; /* Consistent height for all items */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 30px;
+  margin-right: 15px; /* Space between the colored blocks */
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  color: #ffffff; /* White text for contrast */
+  transition: transform 0.3s ease; /* Smooth hover effect */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* 🌈 Custom Colors for Each Item */
+.item-1 { background-color: #e74c3c; } /* Red */
+.item-2 { background-color: #3498db; } /* Blue */
+.item-3 { background-color: #2ecc71; } /* Green */
+.item-4 { background-color: #f39c12; } /* Orange (Highlighting the offer) */
+.item-5 { background-color: #9b59b6; } /* Purple */
+
+/* Hover Effect: Pause animation and slight lift/scale on the hovered item */
+.scroll-container:hover .scroll-content {
+  animation-play-state: paused;
+}
+
+.service-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  z-index: 10; /* Bring the hovered item forward */
+}
+
+/* ⚙️ The Keyframe Animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  /* Translates content by exactly half its total width (one full set of services) */
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+
+
+
 .list-footer {
   padding: 0;
   margin: 0;
