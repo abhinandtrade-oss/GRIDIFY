@@ -2,46 +2,6 @@
 <html lang="en">
 <head>
   
-    <!-- PRELOADER -->
-    
-    <div id="preloader">
-    <img id="preloaderImg" style="width:200px; height:10px;">
-</div>
-
-<script>
-fetch('data/data.json')
-  .then(r => r.json())
-  .then(data => {
-    const url = data["IM-103"]
-    document.getElementById('preloaderImg').src = url
-  })
-  .catch(err => console.error('JSON load error', err))
-</script>
-
-	<!-- Header -->
-	<header>
-        <div class="header">
-            <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <a class="navbar-brand" href="index.html">
-    <img id="logohead"
-     class="logo"
-     src=""
-     alt="Gridify"
-     width="200"
-     height="200">
-
-     <script>
-fetch("data/data.json")
-  .then(response => response.json())
-  .then(data => {
-    const imgUrl = data["IM-101"];
-    document.getElementById("logohead").src = imgUrl;
-  })
-  .catch(error => console.error("Error loading image:", error));
-</script>
-
-
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Image ID Manager — Bulk Upload</title>
