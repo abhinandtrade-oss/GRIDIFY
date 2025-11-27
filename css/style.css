@@ -3369,7 +3369,7 @@ a:hover {
   /* Crucial: flex-shrink: 0 prevents items from shrinking */
   flex-shrink: 0;
   min-width: 250px; /* Give each item a minimum width to display content */
-  height: 60px; /* Consistent height for all items */
+  height: 50px; /* Consistent height for all items */
   display: flex;
   align-items: center;
   justify-content: center;
