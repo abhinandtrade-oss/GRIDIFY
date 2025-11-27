@@ -279,22 +279,26 @@
     </div>
 
     <!-- PRELOADER SCRIPT -->
-    <script>
-    fetch('data/data.json')
-      .then(r => r.json())
-      .then(data => {
-        const url = data["IM-103"];
-        document.getElementById('preloaderImg').src = url;
-      })
-      .catch(err => console.error('JSON load error', err));
+   <script>
+  fetch('data/data.json')
+    .then(r => r.json())
+    .then(data => {
+      const url = data["IM-103"];
+      document.getElementById('preloaderImg').src = url;
+    })
+    .catch(err => console.error('JSON load error', err));
 
-    window.addEventListener("load", () => {
-      const pre = document.getElementById("preloader");
+  window.addEventListener("load", () => {
+    const pre = document.getElementById("preloader");
+
+    setTimeout(() => {
       pre.style.opacity = "0";
       setTimeout(() => pre.style.display = "none", 500);
-    });
-    </script>
+    }, 2000); // 3 seconds delay
+  });
+</script>
 
 </body>
 </html>
+
 
