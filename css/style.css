@@ -3353,7 +3353,7 @@ a:hover {
 .scroll-container {
   width: 100%;
   overflow: hidden; /* Hides the content outside the container */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0);
   /* The container itself does not need a background color */
 }
 
