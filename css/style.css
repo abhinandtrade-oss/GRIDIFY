@@ -3344,6 +3344,7 @@ a:hover {
   text-align: center;
   line-height: 1.9;
   font-size: 1rem;
+  border-radius: 6px; /* slight curve */
 }
 
 .list-footer {
