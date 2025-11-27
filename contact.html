@@ -211,37 +211,64 @@ fetch("data/data.json")
 
     <!-- Form -->
     <section class="section section-form">
-        <div class="container">
+    <div class="container">
 
-            <p class="before-title text-center">let’s talk</p>
-            <h2 class="title-h2 text-center">Send Us a Massage</h2>
-            <p class="text-center after-title">We are always happy to talk with you. Be sure to write to us if you have any questions or need help and support.</p>
+        <p class="before-title text-center">let’s talk</p>
+        <h2 class="title-h2 text-center">Send Us a Message</h2>
+        <p class="text-center after-title">
+            We are always happy to talk with you. Feel free to write if you have questions.
+        </p>
 
-            <form method="post" action="#" id="contact-form">
-                <div class="form">
-                    <div class="response"></div>
-                    <div class="form-item">
-                        <input class="form__input name" type="text" placeholder="First name">
-                    </div>
-                    <div class="form-item">
-                        <input class="form__input" type="text" placeholder="Last name">
-                    </div>
-                    <div class="form-item">
-                        <input class="form__input email" type="email" placeholder="Email address">
-                    </div>
-                    <div class="form-item">
-                        <input class="form__input" type="text" placeholder="Phone number">
-                    </div>
-                    <div class="form-item w-100">
-                        <textarea class="form__textarea" rows="3" placeholder="Enter your massage"></textarea>
-                    </div>
-                    <div class="form-item text-center">
-                        <button type="button" class="btn btn-primary" id="submit">Send</button>
-                    </div>
+        <form method="post" action="sendemail.php" id="contact-form">
+            <div class="form">
+                <div class="response"></div>
+
+                <div class="form-item">
+                    <input class="form__input name" 
+                           type="text" 
+                           name="name" 
+                           placeholder="First name" 
+                           required>
                 </div>
-            </form>
-        </div>
-    </section>
+
+                <div class="form-item">
+                    <input class="form__input" 
+                           type="text" 
+                           name="lname" 
+                           placeholder="Last name">
+                </div>
+
+                <div class="form-item">
+                    <input class="form__input email" 
+                           type="email" 
+                           name="email" 
+                           placeholder="Email address" 
+                           required>
+                </div>
+
+                <div class="form-item">
+                    <input class="form__input" 
+                           type="text" 
+                           name="phone" 
+                           placeholder="Phone number">
+                </div>
+
+                <div class="form-item w-100">
+                    <textarea class="form__textarea" 
+                              name="contact_message" 
+                              rows="3" 
+                              placeholder="Enter your message"
+                              required></textarea>
+                </div>
+
+                <div class="form-item text-center">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>
 
     <!-- Footer -->
     <footer>
