@@ -3389,6 +3389,21 @@ a:hover {
 .item-3 { background-color: #2ecc71; } /* Green */
 .item-4 { background-color: #f39c12; } /* Orange (Highlighting the offer) */
 .item-5 { background-color: #9b59b6; } /* Purple */
+.item-6 { background-color: #e74c3c; } /* Red */
+.item-7 { background-color: #3498db; } /* Blue */
+.item-8 { background-color: #2ecc71; } /* Green */
+.item-9 { background-color: #f39c12; } /* Orange (Highlighting the offer) */
+.item-10 { background-color: #9b59b6; } /* Purple */
+.item-11 { background-color: #e74c3c; } /* Red */
+.item-12 { background-color: #3498db; } /* Blue */
+.item-13 { background-color: #2ecc71; } /* Green */
+.item-14 { background-color: #f39c12; } /* Orange (Highlighting the offer) */
+.item-55 { background-color: #9b59b6; } /* Purple */
+.item-16 { background-color: #e74c3c; } /* Red */
+.item-17 { background-color: #3498db; } /* Blue */
+.item-18 { background-color: #2ecc71; } /* Green */
+.item-19 { background-color: #f39c12; } /* Orange (Highlighting the offer) */
+.item-20 { background-color: #9b59b6; } /* Purple */
 
 /* Hover Effect: Pause animation and slight lift/scale on the hovered item */
 .scroll-container:hover .scroll-content {
