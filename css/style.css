@@ -511,10 +511,10 @@ a:hover {
     @media (max-width: 575.98px) {
       .banner-carousel .owl-nav {
         right: 15px; } }
-  /*.banner-carousel .owl-prev, .banner-carousel .owl-next {
+  .banner-carousel .owl-prev, .banner-carousel .owl-next {
     width: 0.1px;
     height: 0.1px;
-    background-color: rgba(34, 34, 34, 0.65);
+    background-color: rgba(255, 255, 255, 0);
     background-size: 20px 20px;
     background-repeat: no-repeat;
     background-position: center center;
@@ -522,7 +522,7 @@ a:hover {
     -webkit-transition: 0.3s;
     transition: 0.3s; }
     .banner-carousel .owl-prev:hover, .banner-carousel .owl-next:hover {
-      background-color: #222222; }
+      background-color: #ffffff00; }
     @media (max-width: 991.98px) {
       .banner-carousel .owl-prev, .banner-carousel .owl-next {
         width: 60px;
@@ -530,7 +530,7 @@ a:hover {
   .banner-carousel .owl-prev {
     background-image: url(img/return.svg); }
   .banner-carousel .owl-next {
-    background-image: url(img/arrow.svg); } */
+    background-image: url(img/arrow.svg); } 
 
 .carousel-number {
   font-family: 'Nova Flat', cursive;
