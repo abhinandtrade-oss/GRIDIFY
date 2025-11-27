@@ -3304,6 +3304,7 @@ a:hover {
   display: block;
   text-align: center;
   line-height: 2.1;
+  border-radius: 8px;
   transition: 0.3s;
 }
 .list-social-link:hover {
