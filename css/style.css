@@ -3427,7 +3427,50 @@ a:hover {
   }
 }
 
- 
+
+.help-box {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 22px;
+  background: #f8f9fb;
+  border: 1px solid #d8d8d8;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  text-align: center;
+}
+
+.help-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.help-text {
+  color: #666;
+  margin-bottom: 14px;
+}
+
+.help-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.help-list li {
+  padding: 5px 0;
+  font-size: 16px;
+}
+
+.help-list a {
+  text-decoration: none;
+  color: #0056ff;
+  font-weight: 600;
+}
+
+.help-list a:hover {
+  color: #0037b3;
+}
+
 
 
 .list-footer {
